@@ -61,12 +61,14 @@ model Task {
   created_at          DateTime      @default(now())
   updated_at          DateTime      @default(now())
 
-  profile           Profile  @relation(fields: [profile_id], references: [id])
-  profile_id        Int
-  parent_routine    Routine? @relation(fields: [parent_routine_id], references: [id])
-  parent_routine_id Int?
-  parent_quest      Quest?   @relation(fields: [parent_quest_id], references: [id])
-  parent_quest_id   Int?
+  profile            Profile   @relation(fields: [profile_id], references: [id])
+  profile_id         Int
+  parent_routine     Routine?  @relation(fields: [parent_routine_id], references: [id])
+  parent_routine_id  Int?
+  parent_quest       Quest?    @relation(fields: [parent_quest_id], references: [id])
+  parent_quest_id    Int?
+  parent_subquest    Subquest? @relation(fields: [parent_subquest_id], references: [id])
+  parent_subquest_id Int?
 }
 
 model Routine {
@@ -99,6 +101,22 @@ model Quest {
 
   profile    Profile @relation(fields: [profile_id], references: [id])
   profile_id Int
+
+  tasks     Task[]
+  subquests Subquest[]
+}
+
+model Subquest {
+  id               Int       @id @default(autoincrement())
+  name             String
+  is_complete      Boolean   @default(false)
+  complete_by_date DateTime
+  date_completed   DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @default(now())
+
+  quest    Quest @relation(fields: [quest_id], references: [id])
+  quest_id Int
 
   tasks Task[]
 }
