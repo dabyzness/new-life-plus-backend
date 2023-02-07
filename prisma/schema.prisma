@@ -11,13 +11,13 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  username  String   @unique
-  profile   Profile?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String
+  username   String   @unique
+  profile    Profile?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 }
 
 model Profile {
@@ -35,12 +35,13 @@ model Profile {
   charisma             Int      @default(10)
   charisma_experience  Int      @default(0)
   gold                 Int      @default(20)
-  username_Rel         User     @relation(fields: [username], references: [username])
+  username_rel         User     @relation(fields: [username], references: [username])
   username             String   @unique
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @default(now())
+  created_at           DateTime @default(now())
+  updated_at           DateTime @default(now())
 
-  tasks Task[]
+  tasks    Task[]
+  routines Routine[]
 }
 
 model Task {
@@ -55,9 +56,31 @@ model Task {
   order_of_completion Int?
   repeatable          Int?
   is_complete         Boolean       @default(false)
+  last_completed      DateTime?
+  created_at          DateTime      @default(now())
+  updated_at          DateTime      @default(now())
 
-  profile   Profile @relation(fields: [profileId], references: [id])
-  profileId Int
+  profile           Profile @relation(fields: [profile_id], references: [id])
+  profile_id        Int
+  parent_routine    Routine? @relation(fields: [parent_routine_id], references: [id])
+  parent_routine_id Int?
+}
+
+model Routine {
+  id               Int       @id @default(autoincrement())
+  name             String
+  time_to_complete Int
+  frequency_type   FREQ?
+  streak           Int       @default(0)
+  num_completed    Int       @default(0)
+  last_completed   DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @default(now())
+
+  profile    Profile @relation(fields: [profile_id], references: [id])
+  profile_id Int
+
+  tasks Task[]
 }
 
 enum SKILL {
