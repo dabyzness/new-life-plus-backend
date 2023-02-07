@@ -42,6 +42,7 @@ model Profile {
 
   tasks    Task[]
   routines Routine[]
+  quests   Quest[]
 }
 
 model Task {
@@ -60,10 +61,12 @@ model Task {
   created_at          DateTime      @default(now())
   updated_at          DateTime      @default(now())
 
-  profile           Profile @relation(fields: [profile_id], references: [id])
+  profile           Profile  @relation(fields: [profile_id], references: [id])
   profile_id        Int
   parent_routine    Routine? @relation(fields: [parent_routine_id], references: [id])
   parent_routine_id Int?
+  parent_quest      Quest?   @relation(fields: [parent_quest_id], references: [id])
+  parent_quest_id   Int?
 }
 
 model Routine {
@@ -74,6 +77,23 @@ model Routine {
   streak           Int       @default(0)
   num_completed    Int       @default(0)
   last_completed   DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @default(now())
+
+  profile    Profile @relation(fields: [profile_id], references: [id])
+  profile_id Int
+
+  tasks Task[]
+}
+
+model Quest {
+  id               Int       @id @default(autoincrement())
+  name             String
+  rank             RANK
+  num_subquests    Int
+  is_complete      Boolean   @default(false)
+  complete_by_date DateTime
+  date_completed   DateTime?
   created_at       DateTime  @default(now())
   updated_at       DateTime  @default(now())
 
@@ -104,4 +124,12 @@ enum DAILLY_FREQ {
   FRI
   SAT
   SUN
+}
+
+enum RANK {
+  D
+  C
+  B
+  A
+  S
 }
