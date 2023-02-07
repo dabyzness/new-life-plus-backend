@@ -7,7 +7,16 @@ import { SECRET_KEY } from "../middlewares/auth";
 export async function register(req: Request, res: Response) {
   try {
     const user = await prisma.user.create({ data: req.body });
-    res.status(200).send(`${user.email} was registered successfully!`);
+
+    const token = jwt.sign(
+      { id: user.id.toString(), username: user.username },
+      SECRET_KEY,
+      { expiresIn: "2 days" }
+    );
+
+    res
+      .status(200)
+      .json({ user, token, message: "User has registered successfully" });
   } catch (err) {
     return res.status(500).send(err);
   }

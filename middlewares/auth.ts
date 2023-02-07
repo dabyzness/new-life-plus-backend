@@ -10,6 +10,7 @@ export interface CustomRequest extends Request {
   token: string | JwtPayload;
 }
 
+// JWT token check
 export async function auth(req: Request, res: Response, next: NextFunction) {
   try {
     const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -27,6 +28,7 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+// Password Encryption
 export async function encryptPassword(
   req: Request,
   res: Response,
