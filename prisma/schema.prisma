@@ -43,6 +43,7 @@ model Profile {
   tasks    Task[]
   routines Routine[]
   quests   Quest[]
+  items    Item[]
 }
 
 model Task {
@@ -121,6 +122,17 @@ model Subquest {
   tasks Task[]
 }
 
+model Item {
+  id       Int    @id @default(autoincrement())
+  name     String
+  category SKILL  @default(HEALTH)
+  rarity   RARITY @default(COMMON)
+  cost     Int
+
+  profile    Profile @relation(fields: [profile_id], references: [id])
+  profile_id Int
+}
+
 enum SKILL {
   HEALTH
   STRENGTH
@@ -150,4 +162,12 @@ enum RANK {
   B
   A
   S
+}
+
+enum RARITY {
+  COMMON
+  UNCOMMON
+  RARE
+  EPIC
+  LEGENDARY
 }
