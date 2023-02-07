@@ -39,4 +39,46 @@ model Profile {
   username             String   @unique
   createdAt            DateTime @default(now())
   updatedAt            DateTime @default(now())
+
+  tasks Task[]
+}
+
+model Task {
+  id                  Int           @id @default(autoincrement())
+  name                String
+  skill               SKILL         @default(HEALTH)
+  frequnecy_type      FREQ          @default(DAILY)
+  daily_freq          DAILLY_FREQ[] @default([])
+  weekly_freq         Int           @default(1)
+  streak              Int           @default(0)
+  num_completed       Int           @default(0)
+  order_of_completion Int?
+  repeatable          Int?
+  is_complete         Boolean       @default(false)
+
+  profile   Profile @relation(fields: [profileId], references: [id])
+  profileId Int
+}
+
+enum SKILL {
+  HEALTH
+  STRENGTH
+  INTELLECT
+  CHARISMA
+}
+
+enum FREQ {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum DAILLY_FREQ {
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+  SUN
 }
