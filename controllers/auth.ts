@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import prisma from "../config/prisma";
+import jwt from "jsonwebtoken";
+import { SECRET_KEY } from "../middlewares/auth";
 
 export async function register(req: Request, res: Response) {
   try {
@@ -26,7 +28,17 @@ export async function login(req: Request, res: Response) {
     if (!isMatch) {
       throw new Error(`Password is incorrect`);
     }
-    res.status(200).send(user);
+
+    const token = jwt.sign(
+      { id: user.id.toString(), username: user.username },
+      SECRET_KEY,
+      { expiresIn: "2 days" }
+    );
+
+    res.status(200).send({
+      user: { id: user.id.toString(), username: user.username },
+      token: token,
+    });
   } catch (err) {
     return res.status(500).send(err);
   }
