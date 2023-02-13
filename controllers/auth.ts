@@ -3,10 +3,12 @@ import bcrypt from "bcrypt";
 import prisma from "../config/prisma";
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "../middlewares/auth";
-import { PrismaClientInitializationError } from "@prisma/client/runtime";
+import {
+  PrismaClientInitializationError,
+  PrismaClientKnownRequestError,
+} from "@prisma/client/runtime";
 
 export async function register(req: Request, res: Response) {
-  console.log(req.body);
   try {
     const user = await prisma.user.create({ data: req.body });
 
@@ -20,8 +22,8 @@ export async function register(req: Request, res: Response) {
       .status(200)
       .json({ user, token, message: "User has registered successfully" });
   } catch (err) {
-    console.log(err);
-    return res.status(500).send(err);
+    if (err instanceof PrismaClientKnownRequestError)
+      return res.status(500).json({ message: err.message, meta: err.meta });
   }
 }
 
