@@ -36,4 +36,4 @@ async function getProfile(req: Request, res: Response) {
   }
 }
 
-export { createProfile as create };
+export { createProfile as create, getProfile };
