@@ -6,9 +6,14 @@ const saltRounds = 12;
 
 export const SECRET_KEY: Secret = "dfhluiewbjkvcskjaiuewhgrf";
 
-export interface CustomRequest extends Request {
-  token: string | JwtPayload;
+export interface JwtPayloadUser extends JwtPayload {
+  id: number;
+  username: string;
 }
+
+// export interface CustomRequest extends Request {
+//   token: JwtPayloadUser;
+// }
 
 // JWT token check
 export async function auth(req: Request, res: Response, next: NextFunction) {
@@ -19,8 +24,9 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
       throw new Error("Unauthorized access");
     }
 
-    const decoded = jwt.verify(token, SECRET_KEY);
-    (req as CustomRequest).token = decoded;
+    const decoded = jwt.verify(token, SECRET_KEY) as JwtPayloadUser;
+
+    req.token = decoded;
 
     next();
   } catch (err) {

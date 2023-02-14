@@ -18,9 +18,7 @@ export async function register(req: Request, res: Response) {
       { expiresIn: "2 days" }
     );
 
-    res
-      .status(200)
-      .json({ user, token, message: "User has registered successfully" });
+    res.status(200).json({ user, token });
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError)
       return res.status(500).json({ message: err.message, meta: err.meta });
