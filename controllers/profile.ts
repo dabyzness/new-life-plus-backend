@@ -19,4 +19,21 @@ async function createProfile(req: Request, res: Response) {
   }
 }
 
+async function getProfile(req: Request, res: Response) {
+  try {
+    const { username } = req.params;
+    const profile = await prisma.profile.findFirst({
+      where: { username },
+    });
+
+    if (!profile) {
+      throw new Error("Profile does not exist");
+    }
+
+    res.status(200).json(profile);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+}
+
 export { createProfile as create };
