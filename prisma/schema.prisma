@@ -50,7 +50,7 @@ model Task {
   id                  Int           @id @default(autoincrement())
   name                String
   skill               SKILL         @default(HEALTH)
-  frequnecy_type      FREQ          @default(DAILY)
+  frequency_type      FREQ          @default(DAILY)
   daily_freq          DAILLY_FREQ[] @default([])
   weekly_freq         Int           @default(1)
   streak              Int           @default(0)

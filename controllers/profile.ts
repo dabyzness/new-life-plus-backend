@@ -32,8 +32,8 @@ async function getProfile(req: Request, res: Response) {
     }
 
     const profileWithoutTimestamps = exclude(profile, [
-      "createdAt",
-      "updatedAt",
+      "created_at",
+      "updated_at",
     ]);
 
     res.status(200).json(profileWithoutTimestamps);
