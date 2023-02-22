@@ -4,6 +4,7 @@ require("dotenv").config();
 
 import { router as indexRouter } from "./routes/index";
 import { router as profileRouter } from "./routes/api/profile";
+import { router as taskRouter } from "./routes/api/task";
 import { router as attributeRouter } from "./routes/api/attribute/attribute";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
 app.use("/api/profile", profileRouter);
+app.use("/api/task", taskRouter);
 // app.use("/api", attributeRouter);
 
 app.listen(port, () => {
