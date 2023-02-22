@@ -4,6 +4,6 @@ import * as taskController from "../../controllers/task";
 
 const router = Router();
 
-router.post("/create", auth, taskController.create);
+router.post("/create", auth, taskController.createTask);
 
 export { router };
